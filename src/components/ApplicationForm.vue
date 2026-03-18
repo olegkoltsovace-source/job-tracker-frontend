@@ -2,30 +2,20 @@
   <div class="modal-overlay" @click="$emit('close')">
     <div class="modal" @click.stop>
       <h2>{{ isEdit ? 'Edit Application' : 'Add Application' }}</h2>
-      
+
       <div v-if="error" class="error">{{ error }}</div>
-      
+
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label>Company Name *</label>
-          <input 
-            v-model="form.companyName" 
-            type="text" 
-            placeholder="e.g. Google"
-            required
-          />
+          <input v-model="form.companyName" type="text" placeholder="e.g. Google" required />
         </div>
-        
+
         <div class="form-group">
           <label>Position *</label>
-          <input 
-            v-model="form.position" 
-            type="text" 
-            placeholder="e.g. Backend Developer"
-            required
-          />
+          <input v-model="form.position" type="text" placeholder="e.g. Backend Developer" required />
         </div>
-        
+
         <div class="form-group">
           <label>Status *</label>
           <select v-model="form.status" required>
@@ -36,34 +26,22 @@
             <option value="WITHDRAWN">Withdrawn</option>
           </select>
         </div>
-        
+
         <div class="form-group">
           <label>Applied Date *</label>
-          <input 
-            v-model="form.appliedDate" 
-            type="date" 
-            required
-          />
+          <input v-model="form.appliedDate" type="date" required />
         </div>
-        
+
         <div class="form-group">
           <label>Job URL</label>
-          <input 
-            v-model="form.jobUrl" 
-            type="url" 
-            placeholder="https://careers.company.com/job123"
-          />
+          <input v-model="form.jobUrl" type="url" placeholder="https://careers.company.com/job123" />
         </div>
-        
+
         <div class="form-group">
           <label>Notes</label>
-          <textarea 
-            v-model="form.notes" 
-            rows="4"
-            placeholder="Add any notes about this application..."
-          ></textarea>
+          <textarea v-model="form.notes" rows="4" placeholder="Add any notes about this application..."></textarea>
         </div>
-        
+
         <div class="button-group">
           <button type="button" @click="$emit('close')" class="cancel-btn">
             Cancel
@@ -116,22 +94,20 @@ if (props.application) {
 const handleSubmit = async () => {
   error.value = ''
   loading.value = true
-  
+
   try {
     if (isEdit.value) {
-      // Update existing application
       await api.put(
-        `http://localhost:8080/api/applications/${props.application.id}`,
+        `/api/applications/${props.application.id}`,
         form.value
       )
     } else {
-      // Create new application
-      await api.post('http://localhost:8080/api/applications', {
+      await api.post('/api/applications', {
         ...form.value,
         userId: props.userId
       })
     }
-    
+
     emit('saved')  // Tell parent to refresh data
     emit('close')  // Close modal
   } catch (err) {
@@ -192,7 +168,9 @@ label {
   font-size: 14px;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -201,7 +179,9 @@ input, select, textarea {
   font-family: inherit;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: #667eea;
 }
@@ -216,7 +196,8 @@ textarea {
   margin-top: 30px;
 }
 
-.cancel-btn, .submit-btn {
+.cancel-btn,
+.submit-btn {
   flex: 1;
   padding: 12px;
   border: none;
@@ -271,7 +252,9 @@ textarea {
     font-size: 13px;
   }
 
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     font-size: 14px;
     padding: 10px;
   }
@@ -280,7 +263,8 @@ textarea {
     flex-direction: column;
   }
 
-  .cancel-btn, .submit-btn {
+  .cancel-btn,
+  .submit-btn {
     width: 100%;
   }
 }
